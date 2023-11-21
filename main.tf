@@ -240,7 +240,7 @@ resource "aws_default_security_group" "default" {
       from_port        = 0
       to_port          = 0
       protocol         = "-1"
-      cidr_blocks      = null
+      cidr_blocks      = [var.cidr]
       ipv6_cidr_blocks = null
       prefix_list_ids  = null
       security_groups  = null
@@ -256,13 +256,17 @@ resource "aws_default_security_group" "default" {
       to_port          = 0
       protocol         = "-1"
       cidr_blocks      = ["0.0.0.0/0"]
-      cidr_blocks      = null
-      ipv6_cidr_blocks = null
+      ipv6_cidr_blocks = ["::/0"]
       prefix_list_ids  = null
       security_groups  = null
       self             = null
     }
   ]
+  tags = {
+    Name        = "${var.env}-${var.project_name}-default-sg"
+    Environment = "${var.env}"
+    Management  = "terraform"
+  }
 }
 
 resource "aws_eip_association" "nat-assoc" {
